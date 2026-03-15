@@ -1,6 +1,6 @@
 {
   "binding.new_idea": "Neue Idee",
-  "binding.detail": "Detail",
+  "binding.edit": "Bearbeiten",
   "binding.status": "Status",
   "binding.priority": "Priorität",
   "binding.add_note": "Notiz",
@@ -28,6 +28,7 @@
   "screen.reminder_placeholder": "Optional...",
   "screen.hint_save": "Enter = Speichern  |  Escape = Abbrechen",
   "screen.hint_select": "Auswahl = Speichern  |  Escape = Abbrechen",
+  "screen.edit_idea": "Idee bearbeiten",
   "screen.change_status": "Status ändern",
   "screen.add_note": "Notiz zu: {title}",
   "screen.note_placeholder": "Notiztext...",
@@ -36,6 +37,7 @@
   "notify.status_changed": "{title} → {status}",
   "notify.priority_changed": "{title} → {priority}",
   "notify.note_added": "Notiz hinzugefügt: {title}",
+  "notify.edited": "Gespeichert: {title}",
   "notify.deleted": "Gelöscht: {title}",
   "notify.refreshed": "Aktualisiert",
   "notify.title_required": "Titel ist erforderlich",

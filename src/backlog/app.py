@@ -34,11 +34,11 @@ from backlog.storage import (
 # ── Detail Screen ────────────────────────────────────────────────────────
 
 
-class DetailScreen(ModalScreen[None]):
-    """Show full details of an idea."""
+class EditIdeaScreen(ModalScreen[dict | None]):
+    """Edit an existing idea."""
 
     BINDINGS = [
-        Binding("escape", "cancel", "Close"),
+        Binding("escape", "cancel", "Cancel"),
     ]
 
     def __init__(self, idea: dict) -> None:
@@ -49,28 +49,51 @@ class DetailScreen(ModalScreen[None]):
         idea = self.idea
         with Container():
             yield Label(
-                f"{STATUS_EMOJI.get(idea['status'], '')} {idea['title']}",
-                classes="detail-title",
+                f"{t('screen.edit_idea')} — {idea['id']}",
+                classes="form-title",
             )
-            yield Label(
-                f"ID:        {idea['id']}\n"
-                f"Status:    {STATUS_EMOJI.get(idea['status'], '?')} {idea['status']}\n"
-                f"Priority:  {PRIORITY_EMOJI.get(idea['priority'], '?')} {idea['priority']}\n"
-                f"Source:    {idea.get('source', 'manual')}\n"
-                f"Tags:      {', '.join(idea.get('tags', [])) or '\u2014'}\n"
-                f"Reminder:  {idea.get('reminder_date') or '\u2014'}\n"
-                f"Created:   {idea['created_at'][:10]}\n"
-                f"Updated:   {idea['updated_at'][:10]}",
+            yield Label(t("screen.title"), classes="form-label")
+            yield Input(value=idea["title"], id="title")
+            yield Label(t("screen.description"), classes="form-label")
+            yield Input(value=idea.get("description", ""), id="description")
+            yield Label(t("screen.priority"), classes="form-label")
+            yield Select(
+                [(f"{PRIORITY_EMOJI[p]} {p}", p) for p in ["high", "medium", "low"]],
+                value=idea["priority"],
+                id="priority",
             )
-            if idea.get("description"):
-                yield Label(idea["description"], classes="detail-description")
+            yield Label(t("screen.tags"), classes="form-label")
+            yield Input(value=", ".join(idea.get("tags", [])), id="tags")
+            yield Label(t("screen.reminder"), classes="form-label")
+            yield Input(value=idea.get("reminder_date") or "", id="reminder")
             if idea.get("notes"):
-                yield Label("Notes:", classes="detail-notes-header")
+                yield Label(f"Notes ({len(idea['notes'])})", classes="detail-notes-header")
                 for note in idea["notes"]:
                     yield Label(
                         f"  [{note['date'][:10]}] {note['text']}",
                         classes="detail-note",
                     )
+            yield Label(t("screen.hint_save"), classes="form-hint")
+
+    @on(Input.Submitted)
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        title = self.query_one("#title", Input).value.strip()
+        if not title:
+            self.notify(t("notify.title_required"), severity="error")
+            return
+
+        description = self.query_one("#description", Input).value.strip()
+        priority = self.query_one("#priority", Select).value
+        tags_raw = self.query_one("#tags", Input).value.strip()
+        reminder = self.query_one("#reminder", Input).value.strip()
+
+        self.dismiss({
+            "title": title,
+            "description": description,
+            "priority": priority if priority != Select.BLANK else self.idea["priority"],
+            "tags": [t.strip() for t in tags_raw.split(",") if t.strip()] if tags_raw else [],
+            "reminder_date": reminder or None,
+        })
 
     def action_cancel(self) -> None:
         self.dismiss(None)
@@ -218,7 +241,7 @@ class BacklogApp(App):
         # Runtime-Bindings mit uebersetzten Labels
         self.sub_title = t("app.subtitle")
         self._bindings.bind("n", "add_idea", t("binding.new_idea"))
-        self._bindings.bind("enter", "show_detail", t("binding.detail"))
+        self._bindings.bind("e", "edit_idea", t("binding.edit"))
         self._bindings.bind("s", "change_status", t("binding.status"))
         self._bindings.bind("p", "cycle_priority", t("binding.priority"))
         self._bindings.bind("o", "add_note", t("binding.add_note"))
@@ -249,10 +272,18 @@ class BacklogApp(App):
         table.add_columns("ID", "Status", "P", "Title", "Tags", "N", "Reminder", "Created")
         self._refresh_data()
 
+    @on(DataTable.RowSelected, "#ideas-table")
+    def on_row_selected(self, event: DataTable.RowSelected) -> None:
+        """Enter or double-click on a row opens the edit dialog."""
+        self.action_edit_idea()
+
     def check_action(self, action: str, parameters: tuple) -> bool | None:
+        # Focus cycling must always work (Tab/Shift+Tab)
+        if action in ("focus_next", "focus_previous"):
+            return True
         if len(self.screen_stack) > 1:
             return None
-        row_actions = ("show_detail", "change_status", "cycle_priority", "add_note", "delete_idea")
+        row_actions = ("edit_idea", "change_status", "cycle_priority", "add_note", "delete_idea")
         if action in row_actions:
             table = self.query_one("#ideas-table", DataTable)
             if table.row_count == 0:
@@ -326,10 +357,27 @@ class BacklogApp(App):
                 return idea
         return None
 
-    def action_show_detail(self) -> None:
+    def action_edit_idea(self) -> None:
         idea = self._get_selected_idea()
-        if idea:
-            self.push_screen(DetailScreen(idea))
+        if not idea:
+            return
+
+        def on_result(result: dict | None) -> None:
+            if result is None:
+                return
+            cleaned_title, title_tags = extract_tags_from_title(result["title"])
+            all_tags = list(dict.fromkeys(result["tags"] + title_tags))
+            idea["title"] = cleaned_title
+            idea["description"] = result["description"]
+            idea["priority"] = result["priority"]
+            idea["tags"] = all_tags
+            idea["reminder_date"] = result["reminder_date"]
+            idea["updated_at"] = datetime.now(timezone.utc).isoformat()
+            save_ideas(self.data)
+            self._refresh_data()
+            self.notify(t("notify.edited", title=cleaned_title))
+
+        self.push_screen(EditIdeaScreen(idea), callback=on_result)
 
     def action_add_idea(self) -> None:
         def on_result(result: dict | None) -> None:

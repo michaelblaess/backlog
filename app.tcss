@@ -34,40 +34,45 @@ DataTable {
     height: 1fr;
 }
 
-/* ── Detail Screen ────────────────────────────── */
+/* ── Edit Idea Screen ─────────────────────────── */
 
-DetailScreen {
+EditIdeaScreen {
     align: center middle;
 }
 
-DetailScreen > Container {
-    width: 72;
+EditIdeaScreen > Container {
+    width: 65;
+    height: auto;
     max-height: 80%;
     border: thick $accent;
     background: $surface;
     padding: 1 2;
 }
 
-DetailScreen .detail-title {
+EditIdeaScreen .form-title {
     text-style: bold;
     color: $text;
     margin-bottom: 1;
 }
 
-DetailScreen .detail-description {
-    margin-top: 1;
+EditIdeaScreen .form-label {
     color: $text-muted;
-    padding: 1;
-    border: solid $primary-background;
+    margin-top: 1;
 }
 
-DetailScreen .detail-notes-header {
+EditIdeaScreen .form-hint {
+    color: $text-muted;
+    text-style: italic;
+    margin-top: 1;
+}
+
+EditIdeaScreen .detail-notes-header {
     margin-top: 1;
     text-style: bold;
     color: $text;
 }
 
-DetailScreen .detail-note {
+EditIdeaScreen .detail-note {
     color: $text-muted;
     padding-left: 2;
 }

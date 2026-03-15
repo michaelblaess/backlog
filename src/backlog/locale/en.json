@@ -1,6 +1,6 @@
 {
   "binding.new_idea": "New Idea",
-  "binding.detail": "Detail",
+  "binding.edit": "Edit",
   "binding.status": "Status",
   "binding.priority": "Priority",
   "binding.add_note": "Add Note",
@@ -28,6 +28,7 @@
   "screen.reminder_placeholder": "Optional...",
   "screen.hint_save": "Enter = Save  |  Escape = Cancel",
   "screen.hint_select": "Select = Save  |  Escape = Cancel",
+  "screen.edit_idea": "Edit Idea",
   "screen.change_status": "Change Status",
   "screen.add_note": "Add Note to: {title}",
   "screen.note_placeholder": "Note text...",
@@ -36,6 +37,7 @@
   "notify.status_changed": "{title} → {status}",
   "notify.priority_changed": "{title} → {priority}",
   "notify.note_added": "Note added to: {title}",
+  "notify.edited": "Saved: {title}",
   "notify.deleted": "Deleted: {title}",
   "notify.refreshed": "Refreshed",
   "notify.title_required": "Title is required",
