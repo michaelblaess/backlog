@@ -10,6 +10,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 
+from backlog.i18n import t
 from backlog.storage import (
     STATUS_ORDER,
     STATUS_EMOJI,
@@ -34,11 +35,11 @@ def cmd_add(args: argparse.Namespace) -> None:
     data = load_ideas()
     now = datetime.now(timezone.utc).isoformat()
     explicit_tags = [t.strip() for t in args.tags.split(",")] if args.tags else []
-    title_tags = extract_tags_from_title(args.title)
+    cleaned_title, title_tags = extract_tags_from_title(args.title)
     all_tags = list(dict.fromkeys(explicit_tags + title_tags))
     idea = {
         "id": next_id(data),
-        "title": args.title,
+        "title": cleaned_title,
         "description": args.description or "",
         "status": "new",
         "priority": args.priority or "medium",
@@ -51,7 +52,7 @@ def cmd_add(args: argparse.Namespace) -> None:
     }
     data["ideas"].append(idea)
     save_ideas(data)
-    console.print(f"[green]\u2713[/green] Idea [bold]{idea['id']}[/bold] added: {idea['title']}")
+    console.print(f"[green]\u2713[/green] {t('cli.added', id=idea['id'], title=idea['title'])}")
 
 
 def cmd_list(args: argparse.Namespace) -> None:
@@ -62,7 +63,7 @@ def cmd_list(args: argparse.Namespace) -> None:
         ideas = [i for i in ideas if i["status"] == args.status]
 
     if not ideas:
-        console.print("[dim]No ideas found.[/dim]")
+        console.print(f"[dim]{t('cli.no_ideas')}[/dim]")
         return
 
     priority_order = {"high": 0, "medium": 1, "low": 2}
@@ -98,7 +99,7 @@ def cmd_show(args: argparse.Namespace) -> None:
     data = load_ideas()
     idea = find_idea(data, args.id)
     if not idea:
-        console.print(f"[red]Idea {args.id} not found.[/red]")
+        console.print(f"[red]{t('cli.not_found', id=args.id)}[/red]")
         return
 
     lines = [
@@ -128,7 +129,7 @@ def cmd_update(args: argparse.Namespace) -> None:
     data = load_ideas()
     idea = find_idea(data, args.id)
     if not idea:
-        console.print(f"[red]Idea {args.id} not found.[/red]")
+        console.print(f"[red]{t('cli.not_found', id=args.id)}[/red]")
         return
 
     changed = []
@@ -148,35 +149,35 @@ def cmd_update(args: argparse.Namespace) -> None:
     if changed:
         idea["updated_at"] = datetime.now(timezone.utc).isoformat()
         save_ideas(data)
-        console.print(f"[green]\u2713[/green] Updated [bold]{idea['id']}[/bold]: {', '.join(changed)}")
+        console.print(f"[green]\u2713[/green] {t('cli.updated', id=idea['id'], changes=', '.join(changed))}")
     else:
-        console.print("[dim]Nothing to update.[/dim]")
+        console.print(f"[dim]{t('cli.nothing_to_update')}[/dim]")
 
 
 def cmd_note(args: argparse.Namespace) -> None:
     data = load_ideas()
     idea = find_idea(data, args.id)
     if not idea:
-        console.print(f"[red]Idea {args.id} not found.[/red]")
+        console.print(f"[red]{t('cli.not_found', id=args.id)}[/red]")
         return
 
     note = {"date": datetime.now(timezone.utc).isoformat(), "text": args.text}
     idea["notes"].append(note)
     idea["updated_at"] = note["date"]
     save_ideas(data)
-    console.print(f"[green]\u2713[/green] Note added to [bold]{idea['id']}[/bold]")
+    console.print(f"[green]\u2713[/green] {t('cli.note_added', id=idea['id'])}")
 
 
 def cmd_delete(args: argparse.Namespace) -> None:
     data = load_ideas()
     idea = find_idea(data, args.id)
     if not idea:
-        console.print(f"[red]Idea {args.id} not found.[/red]")
+        console.print(f"[red]{t('cli.not_found', id=args.id)}[/red]")
         return
 
     data["ideas"] = [i for i in data["ideas"] if i["id"] != args.id]
     save_ideas(data)
-    console.print(f"[green]\u2713[/green] Deleted [bold]{args.id}[/bold]: {idea['title']}")
+    console.print(f"[green]\u2713[/green] {t('cli.deleted', id=args.id, title=idea['title'])}")
 
 
 def cmd_summary(args: argparse.Namespace) -> None:
@@ -192,7 +193,7 @@ def cmd_share(args: argparse.Namespace) -> None:
     data = load_ideas()
     idea = find_idea(data, args.id)
     if not idea:
-        console.print(f"[red]Idea {args.id} not found.[/red]")
+        console.print(f"[red]{t('cli.not_found', id=args.id)}[/red]")
         return
 
     md = generate_share_md(idea)
@@ -205,17 +206,20 @@ def cmd_share(args: argparse.Namespace) -> None:
 def cmd_export(args: argparse.Namespace) -> None:
     data = load_ideas()
     generate_backlog_md(data)
-    console.print("[green]\u2713[/green] Exported to BACKLOG.md")
+    console.print(f"[green]\u2713[/green] {t('cli.exported')}")
 
 
 # ── CLI Parser ───────────────────────────────────────────────────────────
 
 
 def run_cli() -> None:
+    from backlog.i18n import SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE
+
     parser = argparse.ArgumentParser(
         prog="backlog",
         description="Personal vision management \u2014 capture, track and grow ideas.",
     )
+    parser.add_argument("--lang", default=DEFAULT_LANGUAGE, choices=SUPPORTED_LANGUAGES, help="Language")
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_add = sub.add_parser("add", help="Add a new idea")

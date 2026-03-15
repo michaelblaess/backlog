@@ -18,6 +18,7 @@ from textual.widgets import (
     Static,
 )
 
+from backlog.i18n import t
 from backlog.storage import (
     STATUS_ORDER,
     STATUS_EMOJI,
@@ -87,28 +88,28 @@ class AddIdeaScreen(ModalScreen[dict | None]):
 
     def compose(self) -> ComposeResult:
         with Container():
-            yield Label("New Idea", classes="form-title")
-            yield Label("Title", classes="form-label")
-            yield Input(placeholder="Idea title...", id="title")
-            yield Label("Description", classes="form-label")
-            yield Input(placeholder="Optional description...", id="description")
-            yield Label("Priority", classes="form-label")
+            yield Label(t("screen.new_idea"), classes="form-title")
+            yield Label(t("screen.title"), classes="form-label")
+            yield Input(placeholder=t("screen.title_placeholder"), id="title")
+            yield Label(t("screen.description"), classes="form-label")
+            yield Input(placeholder=t("screen.description_placeholder"), id="description")
+            yield Label(t("screen.priority"), classes="form-label")
             yield Select(
                 [(f"{PRIORITY_EMOJI[p]} {p}", p) for p in ["high", "medium", "low"]],
                 value="medium",
                 id="priority",
             )
-            yield Label("Tags (comma-separated)", classes="form-label")
-            yield Input(placeholder="tag1, tag2, ...", id="tags")
-            yield Label("Reminder (YYYY-MM-DD)", classes="form-label")
-            yield Input(placeholder="Optional...", id="reminder")
-            yield Label("Enter = Save  |  Escape = Cancel", classes="form-hint")
+            yield Label(t("screen.tags"), classes="form-label")
+            yield Input(placeholder=t("screen.tags_placeholder"), id="tags")
+            yield Label(t("screen.reminder"), classes="form-label")
+            yield Input(placeholder=t("screen.reminder_placeholder"), id="reminder")
+            yield Label(t("screen.hint_save"), classes="form-hint")
 
     @on(Input.Submitted)
     def on_input_submitted(self, event: Input.Submitted) -> None:
         title = self.query_one("#title", Input).value.strip()
         if not title:
-            self.notify("Title is required", severity="error")
+            self.notify(t("notify.title_required"), severity="error")
             return
 
         description = self.query_one("#description", Input).value.strip()
@@ -144,15 +145,15 @@ class AddNoteScreen(ModalScreen[str | None]):
 
     def compose(self) -> ComposeResult:
         with Container():
-            yield Label(f"Add Note to: {self.idea_title}", classes="form-title")
-            yield Input(placeholder="Note text...", id="note-text")
-            yield Label("Enter = Save  |  Escape = Cancel", classes="form-hint")
+            yield Label(t("screen.add_note", title=self.idea_title), classes="form-title")
+            yield Input(placeholder=t("screen.note_placeholder"), id="note-text")
+            yield Label(t("screen.hint_save"), classes="form-hint")
 
     @on(Input.Submitted)
     def on_input_submitted(self, event: Input.Submitted) -> None:
         text = self.query_one("#note-text", Input).value.strip()
         if not text:
-            self.notify("Note text is required", severity="error")
+            self.notify(t("notify.note_required"), severity="error")
             return
         self.dismiss(text)
 
@@ -176,13 +177,13 @@ class StatusScreen(ModalScreen[str | None]):
 
     def compose(self) -> ComposeResult:
         with Container():
-            yield Label("Change Status", classes="form-title")
+            yield Label(t("screen.change_status"), classes="form-title")
             yield Select(
                 [(f"{STATUS_EMOJI.get(s, '')} {s}", s) for s in STATUS_ORDER],
                 value=self.current_status,
                 id="status-select",
             )
-            yield Label("Select = Save  |  Escape = Cancel", classes="form-hint")
+            yield Label(t("screen.hint_select"), classes="form-hint")
 
     @on(Select.Changed, "#status-select")
     def on_status_changed(self, event: Select.Changed) -> None:
@@ -200,19 +201,7 @@ class BacklogApp(App):
     """Backlog TUI — Personal vision management."""
 
     TITLE = "backlog"
-    SUB_TITLE = "vision management"
     CSS_PATH = Path(__file__).parent.parent.parent / "app.tcss"
-
-    BINDINGS = [
-        Binding("n", "add_idea", "New Idea"),
-        Binding("enter", "show_detail", "Detail"),
-        Binding("s", "change_status", "Status"),
-        Binding("p", "cycle_priority", "Priority"),
-        Binding("o", "add_note", "Add Note"),
-        Binding("delete", "delete_idea", "Delete", key_display="DEL"),
-        Binding("r", "refresh_table", "Refresh"),
-        Binding("q", "quit", "Quit"),
-    ]
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
@@ -226,19 +215,30 @@ class BacklogApp(App):
         except ImportError:
             pass
 
+        # Runtime-Bindings mit uebersetzten Labels
+        self.sub_title = t("app.subtitle")
+        self._bindings.bind("n", "add_idea", t("binding.new_idea"))
+        self._bindings.bind("enter", "show_detail", t("binding.detail"))
+        self._bindings.bind("s", "change_status", t("binding.status"))
+        self._bindings.bind("p", "cycle_priority", t("binding.priority"))
+        self._bindings.bind("o", "add_note", t("binding.add_note"))
+        self._bindings.bind("delete", "delete_idea", t("binding.delete"), key_display="DEL")
+        self._bindings.bind("r", "refresh_table", t("binding.refresh"))
+        self._bindings.bind("q", "quit", t("binding.quit"))
+
     def compose(self) -> ComposeResult:
         yield Header()
         yield Static(id="stats-bar")
         with Container(id="filter-bar"):
             with Horizontal():
                 yield Select(
-                    [("All", "all")]
+                    [(t("filter.all"), "all")]
                     + [(f"{STATUS_EMOJI.get(s, '')} {s}", s) for s in STATUS_ORDER],
                     value="all",
                     id="filter-status",
                     allow_blank=False,
                 )
-                yield Input(placeholder="Search...", id="filter-search")
+                yield Input(placeholder=t("filter.search"), id="filter-search")
         yield DataTable(id="ideas-table")
         yield Footer()
 
@@ -292,7 +292,7 @@ class BacklogApp(App):
         counts: dict[str, int] = {}
         for idea in all_ideas:
             counts[idea["status"]] = counts.get(idea["status"], 0) + 1
-        stats_parts = [f"Total: {len(all_ideas)}"]
+        stats_parts = [t("stats.total", count=len(all_ideas))]
         for s in STATUS_ORDER:
             if s in counts:
                 stats_parts.append(f"{STATUS_EMOJI.get(s, '')} {s}: {counts[s]}")
@@ -336,11 +336,11 @@ class BacklogApp(App):
             if result is None:
                 return
             now = datetime.now(timezone.utc).isoformat()
-            title_tags = extract_tags_from_title(result["title"])
+            cleaned_title, title_tags = extract_tags_from_title(result["title"])
             all_tags = list(dict.fromkeys(result["tags"] + title_tags))
             idea = {
                 "id": next_id(self.data),
-                "title": result["title"],
+                "title": cleaned_title,
                 "description": result["description"],
                 "status": "new",
                 "priority": result["priority"],
@@ -354,7 +354,7 @@ class BacklogApp(App):
             self.data["ideas"].append(idea)
             save_ideas(self.data)
             self._refresh_data()
-            self.notify(f"Added: {idea['title']}")
+            self.notify(t("notify.added", title=idea["title"]))
 
         self.push_screen(AddIdeaScreen(), callback=on_result)
 
@@ -370,7 +370,7 @@ class BacklogApp(App):
             idea["updated_at"] = datetime.now(timezone.utc).isoformat()
             save_ideas(self.data)
             self._refresh_data()
-            self.notify(f"{idea['title']} \u2192 {STATUS_EMOJI.get(new_status, '')} {new_status}")
+            self.notify(t("notify.status_changed", title=idea["title"], status=f"{STATUS_EMOJI.get(new_status, '')} {new_status}"))
 
         self.push_screen(StatusScreen(idea["status"]), callback=on_result)
 
@@ -384,7 +384,7 @@ class BacklogApp(App):
         idea["updated_at"] = datetime.now(timezone.utc).isoformat()
         save_ideas(self.data)
         self._refresh_data()
-        self.notify(f"{idea['title']} \u2192 {PRIORITY_EMOJI.get(new_priority, '')} {new_priority}")
+        self.notify(t("notify.priority_changed", title=idea["title"], priority=f"{PRIORITY_EMOJI.get(new_priority, '')} {new_priority}"))
 
     def action_add_note(self) -> None:
         idea = self._get_selected_idea()
@@ -399,7 +399,7 @@ class BacklogApp(App):
             idea["updated_at"] = note["date"]
             save_ideas(self.data)
             self._refresh_data()
-            self.notify(f"Note added to: {idea['title']}")
+            self.notify(t("notify.note_added", title=idea["title"]))
 
         self.push_screen(AddNoteScreen(idea["title"]), callback=on_result)
 
@@ -411,8 +411,8 @@ class BacklogApp(App):
         self.data["ideas"] = [i for i in self.data["ideas"] if i["id"] != idea["id"]]
         save_ideas(self.data)
         self._refresh_data()
-        self.notify(f"Deleted: {title}")
+        self.notify(t("notify.deleted", title=title))
 
     def action_refresh_table(self) -> None:
         self._refresh_data()
-        self.notify("Refreshed")
+        self.notify(t("notify.refreshed"))
