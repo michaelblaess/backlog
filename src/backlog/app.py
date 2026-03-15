@@ -365,9 +365,9 @@ class BacklogApp(App):
         def on_result(result: dict | None) -> None:
             if result is None:
                 return
-            cleaned_title, title_tags = extract_tags_from_title(result["title"])
+            title_tags = extract_tags_from_title(result["title"])
             all_tags = list(dict.fromkeys(result["tags"] + title_tags))
-            idea["title"] = cleaned_title
+            idea["title"] = result["title"]
             idea["description"] = result["description"]
             idea["priority"] = result["priority"]
             idea["tags"] = all_tags
@@ -375,7 +375,7 @@ class BacklogApp(App):
             idea["updated_at"] = datetime.now(timezone.utc).isoformat()
             save_ideas(self.data)
             self._refresh_data()
-            self.notify(t("notify.edited", title=cleaned_title))
+            self.notify(t("notify.edited", title=result["title"]))
 
         self.push_screen(EditIdeaScreen(idea), callback=on_result)
 
@@ -384,11 +384,11 @@ class BacklogApp(App):
             if result is None:
                 return
             now = datetime.now(timezone.utc).isoformat()
-            cleaned_title, title_tags = extract_tags_from_title(result["title"])
+            title_tags = extract_tags_from_title(result["title"])
             all_tags = list(dict.fromkeys(result["tags"] + title_tags))
             idea = {
                 "id": next_id(self.data),
-                "title": cleaned_title,
+                "title": result["title"],
                 "description": result["description"],
                 "status": "new",
                 "priority": result["priority"],

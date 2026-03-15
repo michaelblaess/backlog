@@ -35,11 +35,11 @@ def cmd_add(args: argparse.Namespace) -> None:
     data = load_ideas()
     now = datetime.now(timezone.utc).isoformat()
     explicit_tags = [t.strip() for t in args.tags.split(",")] if args.tags else []
-    cleaned_title, title_tags = extract_tags_from_title(args.title)
+    title_tags = extract_tags_from_title(args.title)
     all_tags = list(dict.fromkeys(explicit_tags + title_tags))
     idea = {
         "id": next_id(data),
-        "title": cleaned_title,
+        "title": args.title,
         "description": args.description or "",
         "status": "new",
         "priority": args.priority or "medium",

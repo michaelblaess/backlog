@@ -297,38 +297,32 @@ class TestGenerateBacklogMd:
 
 
 class TestExtractTagsFromTitle:
-    def test_leading_hashtag_removed(self) -> None:
-        title, tags = extract_tags_from_title("#Sitefinity: gesperrte Seiten entsperren")
-        assert title == "gesperrte Seiten entsperren"
+    def test_hashtag_extracted(self) -> None:
+        tags = extract_tags_from_title("#Sitefinity: gesperrte Seiten entsperren")
         assert tags == ["sitefinity"]
 
-    def test_leading_hashtag_without_colon(self) -> None:
-        title, tags = extract_tags_from_title("#Python neues Widget bauen")
-        assert title == "neues Widget bauen"
+    def test_single_hashtag(self) -> None:
+        tags = extract_tags_from_title("#Python neues Widget bauen")
         assert tags == ["python"]
 
-    def test_multiple_hashtags_only_leading_removed(self) -> None:
-        title, tags = extract_tags_from_title("#Python: neues #TUI Widget bauen")
-        assert title == "neues #TUI Widget bauen"
+    def test_multiple_hashtags(self) -> None:
+        tags = extract_tags_from_title("#Python: neues #TUI Widget bauen")
         assert tags == ["python", "tui"]
 
     def test_no_hashtags(self) -> None:
-        title, tags = extract_tags_from_title("Einfacher Titel ohne Tags")
-        assert title == "Einfacher Titel ohne Tags"
+        tags = extract_tags_from_title("Einfacher Titel ohne Tags")
         assert tags == []
 
     def test_hashtag_lowercase(self) -> None:
-        title, tags = extract_tags_from_title("#React App bauen")
+        tags = extract_tags_from_title("#React App bauen")
         assert tags == ["react"]
 
-    def test_mid_sentence_hashtag_stays(self) -> None:
-        title, tags = extract_tags_from_title("Fix fuer #Sitefinity Bug")
-        assert title == "Fix fuer #Sitefinity Bug"
+    def test_mid_sentence_hashtag(self) -> None:
+        tags = extract_tags_from_title("Fix fuer #Sitefinity Bug")
         assert tags == ["sitefinity"]
 
-    def test_only_hashtag_keeps_title(self) -> None:
-        title, tags = extract_tags_from_title("#onlytag")
-        assert title == "#onlytag"
+    def test_only_hashtag(self) -> None:
+        tags = extract_tags_from_title("#onlytag")
         assert tags == ["onlytag"]
 
 
