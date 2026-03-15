@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "backlog"
+version = "1.0.0"
+description = "Personal vision management — capture, track and grow ideas from voice to reality"
+requires-python = ">=3.10"
+dependencies = [
+    "textual>=0.40",
+    "rich>=13.0",
+    "textual-themes @ git+https://github.com/michaelblaess/textual-themes.git",
+]
+
+[project.scripts]
+backlog = "backlog.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

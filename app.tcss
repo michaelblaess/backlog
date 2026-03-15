@@ -1,0 +1,157 @@
+Screen {
+    background: $surface;
+}
+
+#stats-bar {
+    dock: top;
+    height: 3;
+    padding: 1 2;
+    background: $primary-background;
+    color: $text;
+}
+
+#filter-bar {
+    dock: top;
+    height: 3;
+    padding: 0 2;
+    background: $surface;
+}
+
+#filter-bar Horizontal {
+    height: 3;
+}
+
+#filter-bar Select {
+    width: 30;
+    margin-right: 2;
+}
+
+#filter-bar Input {
+    width: 1fr;
+}
+
+DataTable {
+    height: 1fr;
+}
+
+/* ── Detail Screen ────────────────────────────── */
+
+DetailScreen {
+    align: center middle;
+}
+
+DetailScreen > Container {
+    width: 72;
+    max-height: 80%;
+    border: thick $accent;
+    background: $surface;
+    padding: 1 2;
+}
+
+DetailScreen .detail-title {
+    text-style: bold;
+    color: $text;
+    margin-bottom: 1;
+}
+
+DetailScreen .detail-description {
+    margin-top: 1;
+    color: $text-muted;
+    padding: 1;
+    border: solid $primary-background;
+}
+
+DetailScreen .detail-notes-header {
+    margin-top: 1;
+    text-style: bold;
+    color: $text;
+}
+
+DetailScreen .detail-note {
+    color: $text-muted;
+    padding-left: 2;
+}
+
+/* ── Add Idea Screen ──────────────────────────── */
+
+AddIdeaScreen {
+    align: center middle;
+}
+
+AddIdeaScreen > Container {
+    width: 65;
+    height: auto;
+    max-height: 80%;
+    border: thick $accent;
+    background: $surface;
+    padding: 1 2;
+}
+
+AddIdeaScreen .form-title {
+    text-style: bold;
+    color: $text;
+    margin-bottom: 1;
+}
+
+AddIdeaScreen .form-label {
+    color: $text-muted;
+    margin-top: 1;
+}
+
+AddIdeaScreen .form-hint {
+    color: $text-muted;
+    text-style: italic;
+    margin-top: 1;
+}
+
+/* ── Add Note Screen ──────────────────────────── */
+
+AddNoteScreen {
+    align: center middle;
+}
+
+AddNoteScreen > Container {
+    width: 60;
+    height: auto;
+    border: thick $accent;
+    background: $surface;
+    padding: 1 2;
+}
+
+AddNoteScreen .form-title {
+    text-style: bold;
+    color: $text;
+    margin-bottom: 1;
+}
+
+AddNoteScreen .form-hint {
+    color: $text-muted;
+    text-style: italic;
+    margin-top: 1;
+}
+
+/* ── Status Screen ────────────────────────────── */
+
+StatusScreen {
+    align: center middle;
+}
+
+StatusScreen > Container {
+    width: 40;
+    height: auto;
+    border: thick $accent;
+    background: $surface;
+    padding: 1 2;
+}
+
+StatusScreen .form-title {
+    text-style: bold;
+    color: $text;
+    margin-bottom: 1;
+}
+
+StatusScreen .form-hint {
+    color: $text-muted;
+    text-style: italic;
+    margin-top: 1;
+}
