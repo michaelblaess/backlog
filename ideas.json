@@ -1,3 +1,70 @@
 {
-  "ideas": []
+  "ideas": [
+    {
+      "id": "20260315-001",
+      "title": "Textual TUI",
+      "description": "Admin-Konsole mit Kanban-Board, Statuswechsel, Filter und Suche",
+      "status": "new",
+      "priority": "high",
+      "tags": [
+        "python",
+        "textual",
+        "tui"
+      ],
+      "notes": [],
+      "source": "openclaw",
+      "reminder_date": null,
+      "created_at": "2026-03-15T11:28:23.111278+00:00",
+      "updated_at": "2026-03-15T11:28:23.111278+00:00"
+    },
+    {
+      "id": "20260315-002",
+      "title": "OpenClaw Telegram Skill",
+      "description": "Skill zum Erfassen von Ideen per Sprachnachricht via Telegram",
+      "status": "new",
+      "priority": "high",
+      "tags": [
+        "openclaw",
+        "telegram",
+        "voice"
+      ],
+      "notes": [],
+      "source": "openclaw",
+      "reminder_date": null,
+      "created_at": "2026-03-15T11:28:23.264630+00:00",
+      "updated_at": "2026-03-15T11:28:23.264630+00:00"
+    },
+    {
+      "id": "20260315-003",
+      "title": "Weekly Digest",
+      "description": "Automatischer Wochen-Report mit Zusammenfassung per Telegram",
+      "status": "new",
+      "priority": "medium",
+      "tags": [
+        "telegram",
+        "automation"
+      ],
+      "notes": [],
+      "source": "openclaw",
+      "reminder_date": "2026-03-22",
+      "created_at": "2026-03-15T11:28:23.405710+00:00",
+      "updated_at": "2026-03-15T11:28:23.405710+00:00"
+    },
+    {
+      "id": "20260315-004",
+      "title": "WhatsApp Share",
+      "description": "Ideen-Karten per WhatsApp an Freunde schicken",
+      "status": "new",
+      "priority": "low",
+      "tags": [
+        "whatsapp",
+        "sharing"
+      ],
+      "notes": [],
+      "source": "openclaw",
+      "reminder_date": null,
+      "created_at": "2026-03-15T11:28:23.546697+00:00",
+      "updated_at": "2026-03-15T11:28:23.546697+00:00"
+    }
+  ]
 }
