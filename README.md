@@ -1,5 +1,14 @@
 # backlog
 
+[![Stars](https://img.shields.io/github/stars/michaelblaess/backlog?style=for-the-badge&logo=github&logoColor=white&labelColor=1e2228&color=fbbf24)](https://github.com/michaelblaess/backlog/stargazers)
+[![Forks](https://img.shields.io/github/forks/michaelblaess/backlog?style=for-the-badge&logo=github&logoColor=white&labelColor=1e2228&color=34d399)](https://github.com/michaelblaess/backlog/network/members)
+[![Issues](https://img.shields.io/github/issues/michaelblaess/backlog?style=for-the-badge&logo=github&logoColor=white&labelColor=1e2228&color=f87171)](https://github.com/michaelblaess/backlog/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/michaelblaess/backlog?style=for-the-badge&logo=github&logoColor=white&labelColor=1e2228&color=a78bfa)](https://github.com/michaelblaess/backlog/pulls)
+
+[![Last Commit](https://img.shields.io/github/last-commit/michaelblaess/backlog?style=for-the-badge&logo=git&logoColor=white&labelColor=1e2228&color=3b82f6)](https://github.com/michaelblaess/backlog/commits/main)
+[![License](https://img.shields.io/badge/license-Apache_2.0-3b82f6?style=for-the-badge&labelColor=1e2228)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.10+-3b82f6?style=for-the-badge&logo=python&logoColor=white&labelColor=1e2228)](https://www.python.org/)
+
 Personal vision management — capture, track and grow ideas from voice to reality.
 
 Designed for [OpenClaw](https://openclaw.com) integration via Telegram/WhatsApp.
