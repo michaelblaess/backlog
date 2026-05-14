@@ -1,13 +1,13 @@
 # backlog
 
-[![Stars](https://img.shields.io/github/stars/michaelblaess/backlog?logo=github&color=fbbf24)](https://github.com/michaelblaess/backlog/stargazers)
-[![Forks](https://img.shields.io/github/forks/michaelblaess/backlog?logo=github&color=34d399)](https://github.com/michaelblaess/backlog/network/members)
-[![Issues](https://img.shields.io/github/issues/michaelblaess/backlog?logo=github&color=f87171)](https://github.com/michaelblaess/backlog/issues)
-[![Pull Requests](https://img.shields.io/github/issues-pr/michaelblaess/backlog?logo=github&color=a78bfa)](https://github.com/michaelblaess/backlog/pulls)
+[![Stars](https://img.shields.io/github/stars/michaelblaess/backlog?logo=github&logoColor=white&color=fbbf24)](https://github.com/michaelblaess/backlog/stargazers)
+[![Forks](https://img.shields.io/github/forks/michaelblaess/backlog?logo=github&logoColor=white&color=34d399)](https://github.com/michaelblaess/backlog/network/members)
+[![Issues](https://img.shields.io/github/issues/michaelblaess/backlog?logo=github&logoColor=white&color=f87171)](https://github.com/michaelblaess/backlog/issues)
+[![Pull Requests](https://img.shields.io/github/issues-pr/michaelblaess/backlog?logo=github&logoColor=white&color=a78bfa)](https://github.com/michaelblaess/backlog/pulls)
 
-[![Last Commit](https://img.shields.io/github/last-commit/michaelblaess/backlog?logo=git&color=3b82f6)](https://github.com/michaelblaess/backlog/commits/main)
+[![Last Commit](https://img.shields.io/github/last-commit/michaelblaess/backlog?logo=git&logoColor=white&color=3b82f6)](https://github.com/michaelblaess/backlog/commits/main)
 [![License](https://img.shields.io/badge/license-Apache_2.0-3b82f6)](LICENSE)
-[![Python](https://img.shields.io/badge/python-3.10+-3b82f6?logo=python)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/python-3.10+-3b82f6?logo=python&logoColor=white)](https://www.python.org/)
 
 Personal vision management — capture, track and grow ideas from voice to reality.
 
