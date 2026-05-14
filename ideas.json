@@ -71,6 +71,21 @@
       "reminder_date": null,
       "created_at": "2026-03-15T23:06:12.867738+00:00",
       "updated_at": "2026-03-15T23:06:12.867738+00:00"
+    },
+    {
+      "id": "20260315-005",
+      "title": "Gesperrte Seiten automatisch entsperren",
+      "description": "",
+      "status": "new",
+      "priority": "medium",
+      "tags": [
+        "sitefinity"
+      ],
+      "notes": [],
+      "source": "tui",
+      "reminder_date": null,
+      "created_at": "2026-03-15T15:40:32.871013+00:00",
+      "updated_at": "2026-03-15T15:40:32.871013+00:00"
     }
   ]
 }

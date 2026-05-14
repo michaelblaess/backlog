@@ -1,6 +1,6 @@
 # Backlog
 
-*Last updated: 2026-03-15 23:06 UTC*
+*Last updated: 2026-05-14 22:00 UTC*
 
 ## 💡 New
 
@@ -10,3 +10,4 @@
 | 20260315-002 | 🟡 | Jeanne d'Arc (Computerspiel) |  | — |
 | 20260315-003 | 🟡 | Fahrtenbuch per Sprache (wie Backlog) | fahrtenbuch, tracking | — |
 | 20260315-004 | 🟡 | Hallmarspiel: 3–4 Spieler (Mensch vs mehrere KI) | game, ai, multiplayer | — |
+| 20260315-005 | 🟡 | Gesperrte Seiten automatisch entsperren | sitefinity | — |
