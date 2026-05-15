@@ -1,8 +1,8 @@
 # backlog
 
 <p align="center">
-  <img src="docs/flags/gb.svg" height="13" alt=""> <b>English</b> ·
-  <img src="docs/flags/de.svg" height="13" alt=""> <a href="README.de.md">Deutsch</a>
+  <img src="docs/flags/gb.svg" height="13" alt=""> <a href="README.md">English</a> ·
+  <img src="docs/flags/de.svg" height="13" alt=""> <b>Deutsch</b>
 </p>
 
 ---
@@ -16,57 +16,57 @@
 [![License](https://img.shields.io/badge/license-Apache_2.0-3b82f6)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10+-3b82f6?logo=python&logoColor=white)](https://www.python.org/)
 
-Personal vision management — capture, track and grow ideas from voice to reality.
+Persönliches Visionsmanagement — erfasse, verfolge und entwickle Ideen von der Sprachaufnahme bis zur Umsetzung.
 
-Designed for [OpenClaw](https://openclaw.com) integration via Telegram/WhatsApp.
+Konzipiert für die Integration mit [OpenClaw](https://openclaw.com) über Telegram/WhatsApp.
 
-## Features
+## Funktionen
 
-- Capture ideas via CLI (or OpenClaw voice input)
-- Track status: `new` → `researching` → `in-progress` → `done` → `archived`
-- Priority levels, tags, notes, reminder dates
-- Auto-generated `BACKLOG.md` for GitHub visibility
-- Telegram/WhatsApp-ready Markdown export (`summary`, `share`)
+- Ideen über die CLI erfassen (oder per OpenClaw-Spracheingabe)
+- Status verfolgen: `new` → `researching` → `in-progress` → `done` → `archived`
+- Prioritätsstufen, Tags, Notizen, Erinnerungsdaten
+- Automatisch generierte `BACKLOG.md` für die Sichtbarkeit auf GitHub
+- Telegram-/WhatsApp-fertiger Markdown-Export (`summary`, `share`)
 
-## Usage
+## Verwendung
 
 ```bash
 pip install rich
 
-# Add an idea
+# Eine Idee hinzufuegen
 python backlog.py add "My idea" "Description" --priority high --tags "tag1,tag2"
 
-# Add via OpenClaw (voice source)
+# Per OpenClaw hinzufuegen (Sprachquelle)
 python backlog.py add "Idea from voice" --source openclaw
 
-# List all ideas
+# Alle Ideen auflisten
 python backlog.py list
 python backlog.py list --status new
 
-# Show details
+# Details anzeigen
 python backlog.py show 20260315-001
 
-# Update status/priority/reminder
+# Status/Prioritaet/Erinnerung aktualisieren
 python backlog.py update 20260315-001 --status researching
 python backlog.py update 20260315-001 --reminder 2026-04-01
 
-# Add notes
+# Notizen hinzufuegen
 python backlog.py note 20260315-001 "Research result: ..."
 
-# Telegram summary (all active ideas)
+# Telegram-Zusammenfassung (alle aktiven Ideen)
 python backlog.py summary --raw
 
-# Share single idea (for Telegram/WhatsApp)
+# Einzelne Idee teilen (fuer Telegram/WhatsApp)
 python backlog.py share 20260315-001 --raw
 
-# Regenerate BACKLOG.md
+# BACKLOG.md neu generieren
 python backlog.py export
 ```
 
-## Data
+## Daten
 
-Ideas are stored in `ideas.json`. The `BACKLOG.md` file is auto-generated on every change.
+Ideen werden in `ideas.json` gespeichert. Die Datei `BACKLOG.md` wird bei jeder Änderung automatisch generiert.
 
-## License
+## Lizenz
 
 MIT
